@@ -189,7 +189,10 @@ class BackgroundJobManager(object):
 
         if kwargs.get('daemon', False):
             job.daemon = True
-        job.num = len(self.all)+1 if self.all else 0
+        if self.keys and len(self.all.keys()) > 0:
+            job.num = max(self.all.keys()) + 1
+        else:
+            job.num = 0
         self.running.append(job)
         self.all[job.num] = job
         print('Starting job # %s in a separate thread.' % job.num)
